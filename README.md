@@ -1,6 +1,6 @@
 # FFT-CUDA
 
-This project illustrates the advantages of using a GPU over a CPU for large complex computations as part of a university project.
+This project illustrates the advantages of using a GPU over a CPU for large complex computations.
 The full report can be found in FFT Report.pdf
 
 Autocorrelation.cpp is the main source file, executing convolution on the CPU through Conv_CPU.CPP
