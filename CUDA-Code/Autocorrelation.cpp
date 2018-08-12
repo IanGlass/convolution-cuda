@@ -5,8 +5,6 @@
  * 
  * Date: 14/10/2013
  * 
- * Course: ENCE 463
- * 
  * Description: Main module for performing autocorrelation. 
  * Equipped to perform multiple calls of convolution on the CPU, GPU and
  * a Fast Fourier Transform on the GPU.

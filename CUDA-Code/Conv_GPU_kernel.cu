@@ -8,7 +8,7 @@
  * Course: ENCE 463
  * 
  * Description: Module for performing Autocorrelation on the GPU using 
- * convolutoin.
+ * convolution.
  * 
  * Usage: The module takes input data, width and height and returns 
  * the output matrix with the time taken.

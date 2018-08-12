@@ -5,8 +5,6 @@
  * 
  * Date: 14/10/2013
  * 
- * Course: ENCE 463
- * 
  * Description: Module for performing Autocorrelation on the CPU using
  * convolution.
  * 
