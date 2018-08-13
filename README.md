@@ -12,7 +12,7 @@ Contrary to a CPU which has several high speed cores, a GPU consists of many mod
 The internal GPU memory structure consists of three main memory locations:
 * Local thread memory - like cached memory in CPU for a single thread to store temporary data.
 * Shared memory - Shared memory between thread within a single block for inter-thread communication.
-Global memory - Which acts like a buffer to allow the CPU to load data from RAM into the GPU for processing and allow processed memory to be passed back to the CPU.
+* Global memory - Which acts like a buffer to allow the CPU to load data from RAM into the GPU for processing and allow processed memory to be passed back to the CPU.
 
 <p align="center">
 <img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/Images/GPU-Memory.jpg" width="500">
@@ -97,7 +97,7 @@ cuDoubleComplex *Result_convGPU, cuDoubleComplex *Result_convCPU, cuDoubleComple
 	free(Time);
 }
 ```
-
+### CPU Convolution
 The first function called performs convolution of the input matrix on the CPU using the sliding strip method. A timer is used to measure the time taken to compute the result which is stored in the provided *time* pointer for *run_programs()* to use.
 CPU conv
 
@@ -150,7 +150,7 @@ extern "C" cuDoubleComplex *Conv_CPU_fn(int argc, char **argv, cuDoubleComplex *
     return(conv_out);
 }
 ```
-
+### GPU Convolution
 As the name suggests *Conv_GPU_fn()* performs convolution of the provided matrix on the GPU, implementing a timer to measure the processing time. This is then passed back into a *time* pointer for comparison to CPU processing speed.
 ```c
 /*-----------------------------------------------------------*/
