@@ -1,38 +1,47 @@
-/*
- * File: Conv_CPU.cpp
- * 
- * Author: Ian Glass
- * 
- * Date: 14/10/2013
- * 
- * Description: Module for performing Autocorrelation on the CPU using
- * convolution.
- * 
- * Usage: The module takes input data, width and height and returns 
- * the output matrix with the time taken.
- * 
- */
+/**************************************************************************//**
+* @file Conv_CPU.cpp
+* @brief Module for performing Autocorrelation on the CPU using convolution. 
+* The module takes input data, width and height and returns the output matrix 
+* with the time taken.
+* @author Ian Glass
+* @date    14/10/2013
+*******************************************************************************
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+*******************************************************************************/
 
+/* Includes ------------------------------------------------------------------*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
 #include <cufft.h>
 
-// includes, cuda
 #include <cuda_runtime.h>
 
-// CUDA utilities and system includes
+/* CUDA utilities and system includes */
 #include <helper_functions.h>
 
+/* Global Variables ----------------------------------------------------------*/
 typedef unsigned int  uint;
 typedef unsigned char uchar;
 
-////////////////////////////////////////////////////////////////////////////////
-// Complex operations
-////////////////////////////////////////////////////////////////////////////////
-
-// Complex addition
+/*-----------------------------------------------------------*/
+/**
+  * @brief Addition of complex values.
+  * @param  Two complex variables to be added.
+  * @retval None
+  */
 static __device__ __host__ inline cuDoubleComplex ComplexAdd(cuDoubleComplex a, cuDoubleComplex b)
 {
     cuDoubleComplex c;
@@ -41,7 +50,12 @@ static __device__ __host__ inline cuDoubleComplex ComplexAdd(cuDoubleComplex a, 
     return c;
 }
 
-// Complex multiplication
+/*-----------------------------------------------------------*/
+/**
+  * @brief Multiplication of complex values.
+  * @param  Two complex variables to be added.
+  * @retval None
+  */
 static __device__ __host__ inline cuDoubleComplex ComplexMul(cuDoubleComplex a, cuDoubleComplex b)
 {
     cuDoubleComplex c;
@@ -50,18 +64,23 @@ static __device__ __host__ inline cuDoubleComplex ComplexMul(cuDoubleComplex a, 
     return c;
 }
 
-// Computes convolution on the host
+/*-----------------------------------------------------------*/
+/**
+  * @brief Computes convolution on the CPU.
+  * @param  
+  * @retval None
+  */
 void Convolve(const cuDoubleComplex *signal, const cuDoubleComplex *filter_kernel, int size, cuDoubleComplex *filtered_signal)
 {
     int minRadius = size / 2;
     int maxRadius = size - minRadius;
 
-    // Loop over output element indices
+    /* Loop over output element indices */
     for (int i = 0; i < size; ++i)
     {
         filtered_signal[i].x = filtered_signal[i].y = 0;
 
-        // Loop over convolution indices
+        /* Loop over convolution indices */
         for (int j = - maxRadius + 1; j <= minRadius; ++j)
         {
             int k = i + j;
@@ -74,9 +93,13 @@ void Convolve(const cuDoubleComplex *signal, const cuDoubleComplex *filter_kerne
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// Program main
-////////////////////////////////////////////////////////////////////////////////
+/*-----------------------------------------------------------*/
+/**
+  * @brief Main function for this file.
+  * @param  The data to be convoluted, the data width and height
+  * and a pointer to the processing time.
+  * @retval The convoluted data.
+  */
 extern "C" cuDoubleComplex *Conv_CPU_fn(int argc, char **argv, cuDoubleComplex *data, int width, int height, float *time) {
 
 	StopWatchInterface *timer = 0;
@@ -88,15 +111,14 @@ extern "C" cuDoubleComplex *Conv_CPU_fn(int argc, char **argv, cuDoubleComplex *
 	int size_padded = width_out*height_out;
 	unsigned int mem_size = sizeof(cuDoubleComplex)*size_padded; 
 		
-	//
-    //create zero padded matrix before filling with input data
+    /* create zero padded matrix before filling with input data */
     cuDoubleComplex *data_padded = (cuDoubleComplex *) malloc(mem_size);
     for (int z = 0; z < size_padded; z++) {
 		data_padded[z].x = 0;
 		data_padded[z].y = 0;
 	}
 	
-	//Fill matrix with input data and shift to center
+	/* Fill matrix with input data and shift to center */
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j ++) {
 			data_padded[(j+((width-1)/2))+(i+((height-1)/2))*width_out].x = data[j+i*width].x;
@@ -104,16 +126,16 @@ extern "C" cuDoubleComplex *Conv_CPU_fn(int argc, char **argv, cuDoubleComplex *
 		}
 	}
 	
-	//Allocate host memory for the convolution result
+	/* Allocate host memory for the convolution result */
     cuDoubleComplex *conv_out = (cuDoubleComplex *)malloc(mem_size);
-	//Convolve on the host
+	/* Convolve on the host */
     Convolve(data_padded, data_padded, size_padded, conv_out);
     
     sdkStopTimer(&timer);
     *time = sdkGetTimerValue(&timer);
     sdkDeleteTimer(&timer);
     
-    //Tidy up
+    /* Free allocated memory */
     free(data_padded);
     
     return(conv_out);
