@@ -1,4 +1,4 @@
-# FFT-CUDA
+# Convolution-CUDA
 This project provides an overview of the processing performed on a GPU, CPU-GPU interaction and the advantage of using a GPU for certain processes. The example used is an FFT, however this overview will not provide a thorough explanation of how FFT works, rather focusing on GPU concepts.
 The full report can be found in FFT-Report.pdf
 
@@ -22,7 +22,7 @@ More information can be found [here.](https://www.arc.vt.edu/resources/software/
 
 ## Code
 
-The main module provides the user with a function called ‘run_programs’, which takes an input matrix, dimensions and three pointers to store the results of an FFT on the GPU and convolution on the GPU and CPU. Complementary to the output results, the processing time for each method is displayed on the terminal as a unit of milliseconds. Users are not required to deal with more intricate details, such as block and grid size, as these are autonomously calculated. Autocorrelation can be defined as a cross-correlation of a signal with itself, using ‘self-convolution’. Truncating to one dimension, respective elements in a strip are multiplied and the result is accumulated to produce one element in the auto-correlated matrix. 
+The main module provides the user with a function called â€˜run_programsâ€™, which takes an input matrix, dimensions and three pointers to store the results of an FFT on the GPU and convolution on the GPU and CPU. Complementary to the output results, the processing time for each method is displayed on the terminal as a unit of milliseconds. Users are not required to deal with more intricate details, such as block and grid size, as these are autonomously calculated. Autocorrelation can be defined as a cross-correlation of a signal with itself, using â€˜self-convolutionâ€™. Truncating to one dimension, respective elements in a strip are multiplied and the result is accumulated to produce one element in the auto-correlated matrix. 
 
 ```c
 /*-----------------------------------------------------------*/
