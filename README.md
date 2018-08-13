@@ -228,8 +228,8 @@ extern "C" cuDoubleComplex *Conv_GPU_fn(int argc, char **argv, cuDoubleComplex *
 
 For large matrices (140x140) we see that the processing time required is ~6 s on the CPU compared with 0.13 s on the GPU, with the CPU run time increasing rapidly with size. 
 <p align="center">
-<img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/Images/CPU-plot.tif" width="500">
-<img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/Images/GPU-plot.tif" width="500">
+<img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/Images/CPU-plot.jpg" width="500">
+<img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/Images/GPU-plot.jpg" width="500">
 </p>
 
 
