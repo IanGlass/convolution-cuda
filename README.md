@@ -6,7 +6,7 @@ The full report can be found in FFT-Report.pdf
 Contrary to a CPU which has several high speed cores, a GPU consists of many modest speed cores to perform concurrent processing on shared memory. The *kernel* is the highest level software implementation on the GPU and acts as a CPU executable function. The *kernel* consists of a *grid* with pre-determined constituent thread *blocks*. A *block* is an array of *threads* executed in parallel, capable of inter-thread communication through a shared memory structure and is an instance of a single execution of the *kernel* code. In other words, the *kernel* defines an instruction set and each *thread* executes the instruction set on a different piece of memory, allowing concurrent processing.
 
 <p align="center">
-<img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/GPU-Structure.jpg" width="500">
+<img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/Images/GPU-Structure.jpg" width="500">
 </p>
 
 The internal GPU memory structure consists of three main memory locations:
@@ -15,7 +15,7 @@ The internal GPU memory structure consists of three main memory locations:
 Global memory - Which acts like a buffer to allow the CPU to load data from RAM into the GPU for processing and allow processed memory to be passed back to the CPU.
 
 <p align="center">
-<img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/GPU-Memory.jpg" width="500">
+<img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/Images/GPU-Memory.jpg" width="500">
 </p>
 
 More information can be found [here.](https://www.arc.vt.edu/resources/software/cuda/)
@@ -228,8 +228,8 @@ extern "C" cuDoubleComplex *Conv_GPU_fn(int argc, char **argv, cuDoubleComplex *
 
 For large matrices (140x140) we see that the processing time required is ~6 s on the CPU compared with 0.13 s on the GPU, with the CPU run time increasing rapidly with size. 
 <p align="center">
-<img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/CPU-Plot.jpg" width="500">
-<img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/GPU-Plot.jpg" width="500">
+<img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/Images/CPU-plot.jpg" width="500">
+<img src="https://github.com/IanGlass/FFT-CUDA-Matlab/blob/master/Images/GPU-plot.jpg" width="500">
 </p>
 
 
